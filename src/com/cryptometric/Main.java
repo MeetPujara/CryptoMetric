@@ -1,5 +1,6 @@
 package com.cryptometric;
 
+import com.cryptometric.api.CMCClient;
 import com.cryptometric.dao.PortfolioDAO;
 import com.cryptometric.model.Asset;
 import com.cryptometric.service.CryptoService;
@@ -23,16 +24,28 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    System.out.print("Enter Coin Symbol (e.g., BTC, ETH): ");
+                    // Show top 10 first so they know what to type
+                    CMCClient.showTopCoins();
+
+                    System.out.print("\nEnter Coin Symbol (e.g., BTC): ");
                     String symbol = sc.next().toUpperCase();
-                    System.out.print("Enter Quantity: ");
-                    double qty = sc.nextDouble();
-                    System.out.print("Enter Purchase Price (USD): ");
-                    double price = sc.nextDouble();
 
-                    dao.addAsset(new Asset(symbol, qty, price));
+                    // NEW: Fetch and show the price immediately
+                    double livePrice = CMCClient.getLatestPrice(symbol);
+
+                    if (livePrice == 0.0) {
+                        System.out.println("Could not find price for " + symbol + ". Check the symbol and try again.");
+                    } else {
+                        System.out.printf("Current Live Price: $%.2f%n", livePrice);
+
+                        System.out.print("Enter Quantity to buy: ");
+                        double qty = sc.nextDouble();
+
+                        // Use the livePrice we just fetched as the buy_price
+                        dao.addAsset(new Asset(symbol, qty, livePrice));
+                        System.out.println("Purchase recorded at current market price.");
+                    }
                     break;
-
                 case 2:
                     service.displayPortfolioReport();
                     break;
