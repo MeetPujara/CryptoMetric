@@ -40,4 +40,25 @@ public class CMCClient {
             return 0.0;
         }
     }
+    public static void showTopCoins() {
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=10"))
+                    .header("X-CMC_PRO_API_KEY", API_KEY)
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
+
+            System.out.print("Popular Symbols: ");
+            json.getAsJsonArray("data").forEach(element -> {
+                System.out.print(element.getAsJsonObject().get("symbol").getAsString() + " ");
+            });
+            System.out.println(); // New line
+        } catch (Exception e) {
+            System.out.println("Could not load symbols.");
+        }
+    }
 }
