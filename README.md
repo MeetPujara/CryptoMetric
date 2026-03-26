@@ -19,16 +19,3 @@ The Cryptocurrency Portfolio Manager is a application designed to help with thei
 * Java Development Kit (JDK) 8 or later
 * Maven or Gradle for building and dependency management
 * A compatible database management system (e.g., MySQL, PostgreSQL)
-
-## 📂 Project Structure
-```markdown
-cryptocurrency-portfolio-manager/
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   ├── Main.java
-│   │   │   ├── ConfigLoader.java
-│   │   │   ├── CryptoService.java
-│   │   │   ├── CMCClient.java
-│   │   │   ├── PortfolioDAO.java
-```
